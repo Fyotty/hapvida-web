@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:po="http://primefaces.org/prestige"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <div class="layout-topbar">
+        <div class="layout-topbar-logo">   
+            <a href="home.xhtml">
+                <h1 style="margin-top: -8%; color: #E7D8F5;">HAPVIDA</h1>
+            </a>
+        </div>
+        <a class="layout-menu-button" href="#">
+            <i class="fa fa-bars"></i>
+        </a>
+        <ul class="layout-topbar-menu" role="menu">
+
+            <li class="user-profile" role="menuitem">
+                <a href="#">
+                    <div jsf:id="welcome" class="user-profile-info profile-link">
+                        <span class="user-profile-name">Olá!</span>
+                    </div>
+                </a>
+                <ul>
+                    <li class="profile-detail">
+                        <div class="user-profile-info">
+                            <p:graphicImage styleClass="logo" name="images/avatar/avatar-ava.jpg"
+                                            library="prestige-layout" />
+                            <div class="profile-info">
+                                <span class="user-profile-name">Ava Gregoraci</span>
+                                <span class="user-profile-role">Design Ops</span>
+                            </div>
+                            <a href="#" class="profile-detail-icon">
+                                <i class="fa fa-sign-out"></i>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user"></i>
+                            <div class="menu-text">
+                                <span class="menu-title">Profile</span>
+                                <span class="menu-subtitle">Edit your profile</span>
+                            </div>
+
+                            <i class="right-icon fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cog"></i>
+                            <div class="menu-text">
+                                <span class="menu-title">Settings</span>
+                                <span class="menu-subtitle">Dashboard Settings</span>
+                            </div>
+                            <i class="right-icon fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-inbox"></i>
+                            <div class="menu-text">
+                                <span class="menu-title">Messages</span>
+                                <span class="menu-subtitle">You have a <div class="blue">3 new</div> messages</span>
+                            </div>
+                            <i class="right-icon fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
+                            <div class="menu-text">
+                                <span class="menu-title">Notification</span>
+                                <span class="menu-subtitle">No new notification</span>
+                            </div>
+                            <i class="right-icon fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</ui:composition>

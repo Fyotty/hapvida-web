@@ -1,0 +1,1054 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Documentation</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .docs h1 {
+                margin: 2em 0 1em 0;
+            }
+            
+            .docs p,
+            .docs li {
+                line-height: 1.5;
+            }
+            
+            .docs pre {
+                font-family: monospace;
+                background-color: #434A63;
+                color: #ffffff;
+                padding: 1em;
+                font-size: 14px;
+                border-radius: 3px;
+                overflow: auto;
+            }
+
+            .docs p i {
+                background-color: #ffe7cc;
+                color: #333333;
+                border-radius: 2px;
+                padding: .125em .25em;
+                font-style: normal;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="viewname">
+        <li><p:link outcome="/docs">Documentation</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+    
+        <div class="p-grid">
+            <div class="p-col-12">
+                <div class="card docs">   
+                    <h1>Getting Started</h1>
+                    <p>First of all, you'd need SASS to compile CSS, proceed to <a href="https://sass-lang.com/install">SASS Installation</a> before beginning if you do not have SASS available in your command line.</p>
+                    <p>Demo project has an integrated jetty plugin so running the sample is easy as building the css first followed by the mvn jetty:run command.</p>
+<pre>
+sass --update src/main/webapp/resources/:src/main/webapp/resources/
+mvn jetty:run
+</pre> 
+                    <p>Navigate to  to view the demos which is exactly same as the live version.</p>
+                    
+                    <h1>Layout</h1>
+                    <p>Prestige utilizes <a href="http://docs.oracle.com/javaee/6/tutorial/doc/giqxp.html">JSF templating APIs</a> and provides a main <i>template.xhtml</i> along with additional <i>topbar</i>, <i>menu</i> and <i>footer</i> fragments for the base layout.
+                        These xhtml files must be placed under WEB-INF folder and client pages should reference the template.xhtml as their template. 
+                        Provided empty.xhtml is a sample content page using the main template.xhtml that defines "content" as the main ui:define placeholder. By default template defines 3 placeholders 
+                        (page title, head and actual content) and you many add more as per your requirements.</p>
+                        
+                    <p>Sample page below uses the main template from prestige.</p>
+<pre>
+&lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"&gt;
+                
+    &lt;ui:define name="title"&gt;Test Page&lt;/ui:define&gt;
+
+    &lt;ui:define name="content"&gt;
+        Content goes here
+    &lt;/ui:define&gt;
+
+&lt;/ui:composition&gt;
+</pre>
+                    
+                    <p>Other required assets are the css, javascript and images that are located inside resources/prestige-layout folder, simply copy the prestige-layout folder to your <i>%WEB-APP-FOLDER%/resources</i> folder
+                        so that final path would be <i>%WEB-APP-FOLDER%/resources/prestige-layout/</i>. Please refer to demo app or maven project of the demo app as the reference.</p>
+                    
+                    <h1>GuestPreferences Bean</h1>
+                    <p>GuestPreferences is a simple session scoped bean to keep the user customizations of the layout, template xhtml files
+                    refer to this bean to dynamically change their behavior such as menu mode or theme. This bean is not necessary to run the prestige
+                    and only used for demo purposes. For example template.xhtml includes layout color depending on a user preference using an EL expression.</p>
+<pre>
+&lt;h:outputStylesheet name="css/layout-\#{guestPreferences.theme}.css" library="prestige-layout" /&gt;
+</pre>               
+                    <p>In your application, you may also need a similar bean to make the template dynamic so that your users will be able to change their preferred menu or theme.</p>  
+                    
+                    <h1>Layout Themes</h1>
+                    <p>Prestige provides 36 built-in theme alternatives for the layout which is enabled by including the layout-*.css file to the project such as <i>layout-canvas.css.</i></p>
+
+                    <ul>
+                        <li>aloe</li>
+                        <li>arecaceae</li>
+                        <li>aqua</li>
+                        <li>bangkok</li>
+                        <li>canvas</li>
+                        <li>cross</li>
+                        <li>deeppurple</li>
+                        <li>dream</li>
+                        <li>emerald</li>
+                        <li>focus</li>
+                        <li>forest</li>
+                        <li>fractal</li>
+                        <li>gem</li>
+                        <li>green</li>
+                        <li>indigo</li>
+                        <li>jungfraujoch</li>
+                        <li>joshua</li>
+                        <li>laser</li>
+                        <li>lime</li>
+                        <li>mackenzie</li>
+                        <li>madrid</li>
+                        <li>maze</li>
+                        <li>metro</li>
+                        <li>milan</li>
+                        <li>mist</li>
+                        <li>night</li>
+                        <li>osterreich</li>
+                        <li>palm</li>
+                        <li>petroleum</li>
+                        <li>polygon</li>
+                        <li>rose</li>
+                        <li>sand</li>
+                        <li>steel</li>
+                        <li>summer</li>
+                        <li>turquoise</li>
+                        <li>urban</li>
+                    </ul>
+
+                    <h1>Component Themes</h1>
+                    <p>Prestiges offers 48 PrimeFaces theme colors out of the box. Setup of a theme simple as including the theme jar in your classpath and defining primefaces.THEME context parameter in web.xml such as <i>prestige-blue-accent</i>. A theme color offers 3 alternatives, in "accent" mode a secondary color is used 
+                        for highlighted elements and headers are displayed with the primary color. In "light" and "dark" alternatives, highlighted elements use the primary color and header elements are displayed as light or dark. 
+                        Full list of the available themes are;</p>
+                    
+                    <ul>
+                        <li>prestige-amber-accent</li>
+                        <li>prestige-amber-dark</li>
+                        <li>prestige-amber-light</li>
+                        <li>prestige-blue-accent</li>
+                        <li>prestige-blue-dark</li>
+                        <li>prestige-blue-light</li>
+                        <li>prestige-bluegray-accent</li>
+                        <li>prestige-bluegray-dark</li>
+                        <li>prestige-bluegray-light</li>
+                        <li>prestige-brown-accent</li>
+                        <li>prestige-brown-dark</li>
+                        <li>prestige-brown-light</li>
+                        <li>prestige-cyan-accent</li>
+                        <li>prestige-cyan-dark</li>
+                        <li>prestige-cyan-light</li>
+                        <li>prestige-deepblue-accent</li>
+                        <li>prestige-deepblue-dark</li>
+                        <li>prestige-deepblue-light</li>
+                        <li>prestige-deeporange-accent</li>
+                        <li>prestige-deeporange-dark</li>
+                        <li>prestige-deeporange-light</li>
+                        <li>prestige-deeppurple-accent</li>
+                        <li>prestige-deeppurple-dark</li>
+                        <li>prestige-deeppurple-light</li>
+                        <li>prestige-gray-accent</li>
+                        <li>prestige-gray-dark</li>
+                        <li>prestige-gray-light</li>
+                        <li>prestige-green-accent</li>
+                        <li>prestige-green-dark</li>
+                        <li>prestige-green-light</li>
+                        <li>prestige-indigo-accent</li>
+                        <li>prestige-indigo-dark</li>
+                        <li>prestige-indigo-light</li>
+                        <li>prestige-lime-accent</li>
+                        <li>prestige-lime-dark</li>
+                        <li>prestige-lime-light</li>
+                        <li>prestige-pink-accent</li>
+                        <li>prestige-pink-dark</li>
+                        <li>prestige-pink-light</li>
+                        <li>prestige-purple-accent</li>
+                        <li>prestige-purple-dark</li>
+                        <li>prestige-purple-light</li>
+                        <li>prestige-teal-accent</li>
+                        <li>prestige-teal-dark</li>
+                        <li>prestige-teal-light</li>
+                        <li>prestige-turquoise-accent</li>
+                        <li>prestige-turquoise-dark</li>
+                        <li>prestige-turquoise-light</li>
+                    </ul>
+                    
+                    <h1>Custom Components Theme</h1>
+                    <p>A custom theme can be developed by the following steps.</p>
+                    <ul>
+                        <li>Create a custom theme folder such as primefaces-prestige-myown under webapp/resources and place an empty theme.scss inside.</li>
+                        <li>Copy the sass folder from the distribution to webapp/resources.</li>
+                        <li>Define the variables listed below along with the imports at the end.</li>
+                        <li>Build the scss to generate css.</li>
+                        <li>Set primefaces.THEME context parameter as <i>prestige-myown</i></li>
+                        <li>Either bundle the css in a jar file for reuse between different projects or serve from webapp/resources/primefaces-prestige-myown folder using a h:outputStyleSheet.</li>
+                    </ul>
+                    
+                    <p>Here are the variables required to create a theme.</p>
+                        
+<pre>
+$primaryLighterColor:#C0D5E9;
+$primaryColor:#6986A1;
+$primaryDarkerColor:#445B71;
+$primaryDarkestColor:#2C3E50;
+$primaryColorText:#ffffff;
+
+$accentColor:#C49DDE;
+$accentDarkerColor:#B077D6;
+$accentColorText:#000000;
+
+$containerHeaderBgColor:$primaryColor;
+$containerHeaderBorder:1px solid $primaryColor;
+$containerHeaderTextColor:$primaryColorText;
+$containerHeaderIconColor:$primaryLighterColor;
+$containerHeaderIconHoverColor:$primaryColorText;
+
+$clickableContainerHeaderBgColor:$primaryColor;
+$clickableContainerHeaderBorder:1px solid $primaryColor;
+$clickableContainerHeaderTextColor:$primaryColorText;
+$clickableContainerHeaderIconColor:$primaryColorText;
+
+$clickableContainerHeaderHoverBgColor:$primaryDarkerColor;
+$clickableContainerHeaderHoverBorder:1px solid $primaryDarkerColor;
+$clickableContainerHeaderHoverTextColor:$primaryColorText;
+$clickableContainerHeaderHoverIconColor:$primaryColorText;
+
+$clickableContainerHeaderActiveBgColor:$accentColor;
+$clickableContainerHeaderActiveBorder:1px solid $accentColor;
+$clickableContainerHeaderActiveTextColor:$accentColorText;
+$clickableContainerHeaderActiveIconColor:$accentColorText;
+
+$clickableContainerHeaderActiveHoverBgColor:$accentColor;
+$clickableContainerHeaderActiveHoverHoverBorder:1px solid $accentColor;
+$clickableContainerHeaderActiveHoverTextColor:$accentColorText;
+$clickableContainerHeaderActiveHoverIconColor:$accentColorText;
+
+@import '../sass/_theme_variables';
+@import '../sass/overrides/_theme_variables';
+@import '../sass/theme/_core';
+</pre> 
+                        
+                    <p> An example sass command to compile the css would be;</p>
+                        
+<pre>
+sass --update src/main/webapp/resources/primefaces-prestige-myown/theme.scss:src/main/webapp/resources/primefaces-prestige-myown/theme.css
+</pre>
+
+                    <p>Watch mode is handy to avoid compiling everytime when a change is made, instead use the following command
+                    so that sass generates the file whenever you make a customization. This builds all css files whenever a change is made to any scss file.</p>
+<pre>
+sass --watch src/main/webapp/resources/primefaces-prestige-myown/theme.scss:src/main/webapp/resources/primefaces-prestige-myown/theme.css
+</pre> 
+
+                    <h1>Custom Layout Theme</h1>
+                    <p>Developing a layout theme is similar to the component theme approach.</p>
+                    <ul>
+                        <li>Choose a layout name such as layout-myown.</li>
+                        <li>Create an empty file named layout-myown.scss inside resources/prestige-layout/css folder.</li>
+                        <li>Copy the sass folder from the distribution to webapp/resources.</li>
+                        <li>Define the variables listed below along with the import at the end.</li>
+                        <li>Build the scss to generate css</li>
+                        <li>Serve the css by importing it using h:outputStylesheet.</li>
+                    </ul>
+
+                    <p>Here are the variables required to create a layout that uses gradients for the background.</p>
+                        
+<pre>
+$primaryColor:#43cbff;
+$primaryHiglightColor:#39299d;
+$primaryTextColor:#3796bc;
+
+/* background */
+$backgroundLeftColor:#3796BC;
+$backgroundRightColor:#302677;
+
+/* horizontal menu */
+$horizontalMenuItemBgColor: rgba(255,255,255,0.2);
+$horizontalMenuItemTextColor: rgba(255,255,255,0.72);
+$horizontalMenuItemHoverBgColor: rgba(255,255,255,0.4);
+$horizontalMenuItemHoverTextColor: #ffffff;
+
+/* topbar */
+$topbarItemBgColor:rgba(255,255,255,0.2);
+$topbarItemHoverBgColor:rgba(255,255,255,0.4);
+$topbarItemIconColor:rgba(255,255,255,0.72);
+$topbarItemTextColor:rgba(255,255,255,0.72);
+$topbarChildItemHoverColor:#FFD312;
+$topbarSearchInputTextColor:#dddee1;
+$topbarSearchPlaceholderTextColor:#dddee1;
+
+/* user profile */
+$userProfileTextColor:#f0f0f0;
+
+/* overlay menu */
+$overlayMenuItemHoverBgColor:#A8E6FF;
+$overlayMenuItemActiveTextColor:#3796BC;
+
+/* overlay menu button */
+$overlayMenuButtonColor:#277695;
+$overlayMenuButtonHoverBgColor:#A8E6FF;
+
+/* mobile menu button */
+$mobileMenuIconColor:#ffffff;
+
+/* actionbar */
+$actionItemBgColor:#EEEDF3;
+$actionItemIconColor:#302677;
+$actionItemHoverBgColor:#C7C5D3;
+$actionItemActiveBgColor:#302677;
+$actionItemActiveIconColor:#ffffff;
+
+//footer
+$footerTextColor:rgba(255, 255, 255, 0.7);
+$footerTextHoverColor:#ffffff;
+
+/* spinner color */
+$spinnerColor:#3796BC;
+
+@import '../../sass/layout/_layout';
+</pre>
+                    <p>If you prefer to use an image for the background, use the variables below. Notice the replacement of <i>$backgroundLeftColor</i> and <i>$backgroundRightColor</i> with <i>$backgroundImage</i>.</p>
+<pre>
+$primaryColor:#677A87;
+$primaryHiglightColor:#2D3940;
+$primaryTextColor:#677A87;
+
+/* background */
+$backgroundImage:'metro.jpg';
+
+/* horizontal menu */
+$horizontalMenuItemBgColor: rgba(255,255,255,0.2);
+$horizontalMenuItemTextColor: rgba(255,255,255,0.9);
+$horizontalMenuItemHoverBgColor: rgba(255,255,255,0.4);
+$horizontalMenuItemHoverTextColor: #ffffff;
+
+/* topbar */
+$topbarItemBgColor:rgba(255,255,255,0.2);
+$topbarItemHoverBgColor:rgba(255,255,255,0.4);
+$topbarItemIconColor:rgba(255,255,255,0.9);
+$topbarItemTextColor:rgba(255,255,255,0.9);
+$topbarChildItemHoverColor:#D8CF84;
+$topbarSearchInputTextColor:#f0f1f5;
+$topbarSearchPlaceholderTextColor:#f0f1f5;
+
+/* user profile */
+$userProfileTextColor:#f0f0f0;
+
+/* overlay menu */
+$overlayMenuItemHoverBgColor:#E4EDF4;
+$overlayMenuItemActiveTextColor:#677A87;
+
+/* overlay menu button */
+$overlayMenuButtonColor:#313842;
+$overlayMenuButtonHoverBgColor:#E4EDF4;
+
+/* mobile menu button */
+$mobileMenuIconColor:#ffffff;
+
+/* actionbar */
+$actionItemBgColor:#E4EDF4;
+$actionItemIconColor:#2D3940;
+$actionItemHoverBgColor:#CAE4F6;
+$actionItemActiveBgColor:#677A87;
+$actionItemActiveIconColor:#ffffff;
+
+//footer
+$footerTextColor:rgba(255, 255, 255, 0.67);
+$footerTextHoverColor:#ffffff;
+
+/* spinner color */
+$spinnerColor:#677A87;
+
+@import '../../sass/layout/_layout';
+</pre>
+
+                    <h1>SASS Variables</h1>
+                    <p>In case you'd like to customize common variables such as font-size, the <i>_variables.scss</i> under the sass folder is where they are defined.</p>
+<pre>
+$fontFamily:'Sarabun',sans-serif;
+$fontSize:14px;
+$textColor:#1b1c1e;
+$textSecondaryColor:#657587;
+$borderRadius:3px;
+$transitionDuration:.3s;
+</pre> 
+
+                    <p><i>_variables.scss</i> under sass folder defines the shared variables of the layout.</p>
+<pre>
+@import './_variables';
+
+$bodyPadding:25px 50px;
+$contentBgColor:#f2f2f2;
+$responsiveLayoutBreakpoint:991px;
+$maskBgColor:#24262e;  
+
+/* horizontal menu */
+$horizontalMenuItemActiveBgColor: #ffffff;
+$horizontalMenuItemActiveTextColor: #1b1c1e;
+
+/* overlay menu */
+$overlayMenuBgColor:#ffffff;
+$overlayMenuShadow:0 2px 4px 0 rgba(0, 0, 0, 0.3);
+$overlayMenuItemTextColor:#313842;
+$overlayMenuItemBorderRadius:3px;
+
+/* mobile menu */
+$mobileMenuBgColor:#24262e;
+$mobileMenuItemBgColor: rgba(255, 255, 255, 0.2);
+$mobileMenuItemHoverBgColor: rgba(255,255,255, 0.4);
+$mobileMenuItemActiveBgColor:#ffffff;
+$mobileMenuItemTextColor:rgba(255,255,255,0.72);
+$mobileMenuItemActiveTextColor:#1b1c1e;
+
+/* tooltip */
+$tooltipBgColor:#313842;
+$tooltipColor:#ffffff;
+
+/* user profile menu */
+$userProfileMenuInfoBgColor:#f9fafc;
+$userProfileMenuInfoNameTextColor:#646a74;
+$userProfileMenuInfoRoleTextColor:#313842;
+$userProfileMenuLinkIconColor:#9ba8b8;
+$userProfileMenuLinkItemTitleColor:#313842;
+$userProfileMenuLinkItemSubTitleColor:#457fca;
+
+//actionbar
+$actionBarBgColor:#ffffff;
+$breadcrumbSeparatorColor:rgba(176, 186, 196, 0.4);
+$breadcrumbItemTextColor:#313842;
+$breadcrumbLinkTextColor:#b0bac4;
+$breadcrumbLinkHoverTextColor:#3ca4e7;
+
+//misc
+$cardBgColor:#ffffff;
+$cardBorder:solid 1px #dfe6ee;
+</pre>
+
+                    <p>Similarly <i>_theme_variables.scss</i> files under sass contains the whole set of variables to generate a PrimeFaces theme.</p>
+
+<div style="height:400px;overflow: auto">
+<pre>
+@import './variables';
+
+//icons
+$iconWidth:1em;
+$iconHeight:1em;
+$iconFontSize:1.143em;
+
+//anchors
+$linkColor:$primaryColor;
+$linkHoverColor:$primaryDarkerColor;
+$linkActiveColor:$primaryDarkestColor;
+
+//highlight
+$highlightBgColor:$accentColor;
+$highlightColorText:$accentColorText;
+
+//input field
+$inputPadding:.429em;
+$inputBgColor:#f5f5f5;
+$inputBorder:1px solid #E0E0E0;
+$inputHoverBorderColor:#bdbdbd;
+$inputFocusBorderColor:$primaryColor;
+$inputErrorBorderColor:#EF5350;
+$inputPlaceholderTextColor:#909090;
+$inputFocusShadow:0 none;
+$inputTransition:border-color $transitionDuration,box-shadow $transitionDuration;
+
+//groups
+$inputGroupBorderColor:#E0E0E0;
+$inputGroupBgColor:#eeeeee;
+$inputGroupTextColor:$textColor;
+$inputGroupIconColor:$textSecondaryColor;
+$inputGroupAddonMinWidth:2*$fontSize;
+
+//input lists
+$inputListMinWidth:12em;
+$inputListBgColor:#ffffff;
+$inputListBorder:0px none;
+$inputListPadding:0;
+
+$inputListItemPadding:.429em .857em;
+$inputListItemBgColor:transparent;
+$inputListItemTextColor:$textColor;
+$inputListItemHoverBgColor:$primaryLighterColor;
+$inputListItemHoverTextColor:$primaryDarkestColor;
+$inputListItemHighlightBgColor:$highlightBgColor;
+$inputListItemHighlightTextColor:$highlightColorText;
+$inputListItemBorder:0 none;
+$inputListItemBorderRadius:0;
+$inputListItemMargin:0;
+
+$inputListHeaderPaddingTop:.429em;
+$inputListHeaderPaddingLeft:.857em;
+$inputListHeaderPaddingRight:.857em;
+$inputListHeaderPaddingBottom:.429em;
+$inputListHeaderBgColor:#eeeeee;
+$inputListHeaderTextColor:$textColor;
+$inputListHeaderBorder:1px solid #E0E0E0;
+
+$inputListHeaderSearchIconColor:$textSecondaryColor;
+$inputListHeaderCloseIconColor:$primaryColor;
+$inputListHeaderCloseIconHoverColor:$primaryDarkerColor;
+$inputListHeaderCloseIconTransition:color $transitionDuration;
+
+//inputs with panels (password, keyboard)
+$inputContentPanelPadding:.857em;
+$inputContentPanelBgColor:#ffffff;
+$inputContentPanelTextColor:$textColor;
+
+//inputs with overlays
+$inputOverlayBorder:1px solid #E0E0E0;
+$inputOverlayShadow:0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+//input dropdowns
+$inputDropdownIconColor:$textSecondaryColor;
+
+//inputs with buttons
+$inputButtonWidth:2.143em;
+
+//button
+$buttonTextOnlyPadding:.429em 1em;
+$buttonWithLeftIconPadding:.429em 1em .429em 2em;
+$buttonWithRightIconPadding:.429em 2em .429em 1em;
+$buttonIconOnlyPadding:.429em;
+$buttonIconOnlyWidth:2.143em;
+
+$buttonBgColor:$primaryColor;
+$buttonBorder:1px solid $primaryColor;
+$buttonTextColor:$primaryColorText;
+
+$buttonHoverBgColor:$primaryDarkerColor;
+$buttonHoverTextColor:$primaryColorText;
+$buttonHoverBorderColor:$primaryDarkerColor;
+
+$buttonActiveBgColor:$primaryDarkestColor;
+$buttonActiveTextColor:$primaryColorText;
+$buttonActiveBorderColor:$primaryDarkestColor;
+
+$buttonFocusOutline: 2px dotted $primaryColor;
+$buttonFocusOutlineOffset:1px;
+$buttonFocusShadow:0 none;
+$buttonTransition:background-color $transitionDuration,box-shadow $transitionDuration;
+$raisedButtonShadow:0 0 3px 2px rgba(0, 0, 0, 0.2);
+$roundedButtonBorderRadius:1em;
+
+//button severities
+$secondaryButtonBgColor:#F5F5F5;
+$secondaryButtonBorder:1px solid #F5F5F5;
+$secondaryButtonTextColor:#212121;
+$secondaryButtonHoverBgColor:#E0E0E0;
+$secondaryButtonHoverTextColor:#212121;
+$secondaryButtonHoverBorderColor:#E0E0E0;
+$secondaryButtonActiveBgColor:#BDBDBD;
+$secondaryButtonActiveTextColor:#212121;
+$secondaryButtonActiveBorderColor:#BDBDBD;
+
+$helpButtonBgColor:#009688;
+$helpButtonTextColor:#ffffff;
+$helpButtonBorder:1px solid #009688;
+$helpButtonHoverBgColor:#00796B;
+$helpButtonHoverTextColor:#ffffff;
+$helpButtonHoverBorderColor:#00796B;
+$helpButtonActiveBgColor:#00695C;
+$helpButtonActiveTextColor:#ffffff;
+$helpButtonActiveBorderColor:#00695C;
+
+$warningButtonBgColor:#FFC107;
+$warningButtonTextColor:#000000;
+$warningButtonBorder:1px solid #FFC107;
+$warningButtonHoverBgColor:#FFA000;
+$warningButtonHoverTextColor:#000000;
+$warningButtonHoverBorderColor:#FFA000;
+$warningButtonActiveBgColor:#FF8F00;
+$warningButtonActiveTextColor:#000000;
+$warningButtonActiveBorderColor:#FF8F00;
+
+$successButtonBgColor:#4CAF50;
+$successButtonTextColor:#ffffff;
+$successButtonBorder:1px solid #4CAF50;
+$successButtonHoverBgColor:#388E3C;
+$successButtonHoverTextColor:#ffffff;
+$successButtonHoverBorderColor:#388E3C;
+$successButtonActiveBgColor:#2E7D32;
+$successButtonActiveTextColor:#ffffff;
+$successButtonActiveBorderColor:#2E7D32;
+
+$infoButtonBgColor:#2196F3;
+$infoButtonTextColor:#ffffff;
+$infoButtonBorder:1px solid #2196F3;
+$infoButtonHoverBgColor:#1976D2;
+$infoButtonHoverTextColor:#ffffff;
+$infoButtonHoverBorderColor:#1976D2;
+$infoButtonActiveBgColor:#1565C0;
+$infoButtonActiveTextColor:#ffffff;
+$infoButtonActiveBorderColor:#1565C0;
+
+$dangerButtonBgColor:#FF5722;
+$dangerButtonTextColor:#ffffff;
+$dangerButtonBorder:1px solid #FF5722;
+$dangerButtonHoverBgColor:#E64A19;
+$dangerButtonHoverTextColor:#ffffff;
+$dangerButtonHoverBorderColor:#E64A19;
+$dangerButtonActiveBgColor:#D84315;
+$dangerButtonActiveTextColor:#ffffff;
+$dangerButtonActiveBorderColor:#D84315;
+
+//checkbox
+$checkboxWidth:20px;
+$checkboxHeight:20px;
+$checkboxActiveBorderColor:$primaryColor;
+$checkboxActiveBgColor:$primaryColor;
+$checkboxActiveHoverBgColor:$primaryDarkestColor;
+$checkboxActiveTextColor:$primaryColorText;
+$checkboxFocusBgColor:$inputBgColor;
+$checkboxFocusTextColor:$primaryColor;
+$checkboxFocusBorderColor:$primaryColor;
+$checkboxFocusShadow:0 0 0 0.2em lighten($primaryColor, 25%);
+$checkboxTransition:background-color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration;
+
+//radiobutton
+$radioButtonWidth:20px;
+$radioButtonHeight:20px;
+$radioButtonActiveBorderColor:$primaryColor;
+$radioButtonActiveBgColor:$primaryColor;
+$radioButtonActiveHoverBgColor:$primaryDarkestColor;
+$radioButtonActiveTextColor:$primaryColorText;
+$radioButtonFocusBgColor:$inputBgColor;
+$radioButtonFocusTextColor:$primaryColor;
+$radioButtonFocusBorderColor:$primaryColor;
+$radioButtonFocusShadow:0 0 0 0.2em lighten($primaryColor, 25%);
+$radioButtonTransition:background-color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration;
+
+//togglebutton
+$toggleButtonBgColor:#E0E0E0;
+$toggleButtonBorder:1px solid #E0E0E0;
+$toggleButtonTextColor:$textColor;
+$toggleButtonIconColor:$textSecondaryColor;
+$toggleButtonHoverBgColor:$primaryLighterColor;
+$toggleButtonHoverBorderColor:$primaryLighterColor;
+$toggleButtonHoverTextColor:$primaryDarkestColor;
+$toggleButtonHoverIconColor:$primaryColor;
+$toggleButtonActiveBgColor:$primaryColor;
+$toggleButtonActiveBorderColor:$primaryColor;
+$toggleButtonActiveTextColor:$primaryColorText;
+$toggleButtonActiveIconColor:$primaryColorText;
+$toggleButtonActiveHoverBgColor:$primaryDarkerColor;
+$toggleButtonActiveHoverBorderColor:$primaryDarkerColor;
+$toggleButtonActiveHoverTextColor:$primaryColorText;
+$toggleButtonActiveHoverIconColor:$primaryColorText;
+$toggleButtonFocusOutline:2px dotted $primaryColor;
+$toggleButtonFocusBgColor:$primaryLighterColor;
+$toggleButtonFocusBorderColor:$primaryLighterColor;
+$toggleButtonFocusTextColor:$primaryDarkestColor;
+$toggleButtonFocusIconColor:$primaryColor;
+
+//inplace
+$inplacePadding:.429em;
+$inplaceHoverBgColor:$primaryLighterColor;
+$inplaceHoverTextColor:$primaryDarkestColor;
+$inplaceTransition:background-color $transitionDuration;
+
+//rating
+$ratingTransition:color $transitionDuration;
+$ratingCancelIconColor:#E57373;
+$ratingCancelHoverIconColor:#E57373;
+$ratingIconWidth:1.429em;
+$ratingIconHeight:1.429em;
+$ratingIconFontSize:1.429em;
+$ratingStarIconColor:$textColor;
+$ratingStarIconHoverColor:$primaryDarkerColor;
+$ratingStarActiveIconColor:$primaryColor;
+
+//slider
+$sliderBgColor:#e0e0e0;
+$sliderHeight:.286em;
+$sliderWidth:.286em;
+$sliderHandleWidth:1.429em;
+$sliderHandleHeight:1.429em;
+$sliderHandleBgColor:#bdbdbd;
+$sliderHandleBorder:2px solid #bdbdbd;
+$sliderHandleHoverBorder:2px solid $primaryLighterColor;
+$sliderHandleHoverBgColor:$primaryLighterColor;
+$sliderHandleFocusBorder:2px solid $primaryColor;
+$sliderHandleFocusBgColor:$primaryColor;
+$sliderHandleBorderRadius:50%;
+$sliderHandleTransition:background-color $transitionDuration;
+$sliderRangeBgColor:$primaryColor;
+
+//calendar
+$calendarWidth:18.571em;
+$calendarNavIconColor:$textSecondaryColor;
+$calendarNavIconHoverColor:$primaryColor;
+$calendarNavIconTransition:color $transitionDuration;
+$calendarTitlePadding:0 .857em;
+$calendarTitleBgColor:inherit;
+$calendarTitleTextColor:$textColor;
+$calendarTableMargin:.857em 0 0 0;
+$calendarCellPadding:.286em;
+$calendarCellDatePadding:.286em;
+$calendarCellDateAnchorPadding:.286em;
+$calendarCellDateHoverBgColor:$primaryLighterColor;
+$calendarCellDateBorderRadius:$borderRadius;
+$calendarCellDateSelectedBgColor:$highlightBgColor;
+$calendarCellDateSelectedTextColor:$highlightColorText;
+$calendarCellDateTodayBgColor:#ffffff;
+$calendarCellDateTodayTextColor:$textColor;
+$calendarOverlayBorder:0 none;
+$calendarTimePickerMargin:.857em 0;
+$calendarTimePickerLabelPadding:0;
+$calendarTimePickerInputPadding:.429em 0;
+$calendarTimePickerInputMargin:0 .714em .714em 40%;
+
+//spinner
+$spinnerButtonWidth:1.429em;
+$spinnerButtonBorder:0 none;
+$spinnerButtonBgColor:$primaryColor;
+$spinnerButtonTextColor:$primaryColorText;
+$spinnerButtonHoverBorder:0 none;
+$spinnerButtonHoverBgColor:$primaryDarkerColor;
+$spinnerButtonHoverTextColor:$primaryColorText;
+$spinnerButtonActiveBorder:0 none;
+$spinnerButtonActiveBgColor:$primaryDarkestColor;
+$spinnerButtonActiveTextColor:$primaryColorText;
+$spinnerButtonFocusBorder:0 none;
+$spinnerButtonFocusBgColor:$primaryDarkerColor;
+$spinnerButtonFocusTextColor:$primaryColorText;
+
+//keyboard
+$keyboardButtonPadding:.429em;
+$keyboardButtonMargin:2px;
+$keyboardButtonBorder:1px solid transparent;
+$keyboardButtonBgColor:#f5f5f5;
+$keyboardButtonTextColor:$textColor;
+$keyboardButtonHoverBorder:1px solid transparent;
+$keyboardButtonHoverBgColor:$primaryLighterColor;
+$keyboardButtonHoverTextColor:$textColor;
+$keyboardButtonActiveBorder:1px solid $primaryColor;
+$keyboardButtonActiveBgColor:$primaryColor;
+$keyboardButtonActiveTextColor:#ffffff;
+$keyboardSpecialButtonBorder:1px solid transparent;
+$keyboardSpecialButtonBgColor:$primaryColor;
+$keyboardSpecialButtonTextColor:#ffffff;
+$keyboardSpecialButtonHoverBorder:1px solid transparent;
+$keyboardSpecialButtonHoverBgColor:$primaryDarkerColor;
+$keyboardSpecialButtonHoverTextColor:#ffffff;
+
+//panel common
+$panelHeaderBorder:$containerHeaderBorder;
+$panelHeaderBgColor:$containerHeaderBgColor;
+$panelHeaderTextColor:$containerHeaderTextColor;
+$panelHeaderIconColor:$containerHeaderIconColor;
+$panelHeaderIconHoverColor:$containerHeaderIconHoverColor;
+$panelHeaderIconTransition:color $transitionDuration;
+$panelHeaderFontWeight:700;
+$panelHeaderPadding:.857em 1em;
+$panelContentBorder:1px solid #e0e0e0;
+$panelContentBgColor:#ffffff;
+$panelContentTextColor:$textColor;
+$panelContentPadding:.571em 1em;
+$panelContentLineHeight:1.5;
+$panelFooterBorder:1px solid #e0e0e0;
+$panelFooterBgColor:#ffffff;
+$panelFooterTextColor:$textColor;
+$panelFooterPadding:.571em 1em;
+$clickablePanelHeaderBorder:$clickableContainerHeaderBorder;
+$clickablePanelHeaderBgColor:$clickableContainerHeaderBgColor;
+$clickablePanelHeaderTextColor:$clickableContainerHeaderTextColor;
+$clickablePanelHeaderIconColor:$clickableContainerHeaderIconColor;
+$clickablePanelHeaderIconTransition:color $transitionDuration;
+$clickablePanelHeaderFontWeight:700;
+$clickablePanelHeaderPadding:.857em 1em;
+$clickablePanelHeaderHoverBgColor:$clickableContainerHeaderHoverBgColor;
+$clickablePanelHeaderHoverBorder:$clickableContainerHeaderHoverBorder;
+$clickablePanelHeaderHoverTextColor:$clickableContainerHeaderHoverTextColor;
+$clickablePanelHeaderHoverIconColor:$clickableContainerHeaderHoverIconColor;
+$clickablePanelHeaderActiveBgColor:$clickableContainerHeaderActiveBgColor;
+$clickablePanelHeaderActiveBorder:$clickableContainerHeaderActiveBorder;
+$clickablePanelHeaderActiveTextColor:$clickableContainerHeaderActiveTextColor;
+$clickablePanelHeaderActiveIconColor:$clickableContainerHeaderActiveIconColor;
+$clickablePanelHeaderActiveHoverBgColor:$clickableContainerHeaderActiveHoverBgColor;
+$clickablePanelHeaderActiveHoverBorder:$clickableContainerHeaderActiveHoverHoverBorder;
+$clickablePanelHeaderActiveHoverTextColor:$clickableContainerHeaderActiveHoverTextColor;
+$clickablePanelHeaderActiveHoverIconColor:$clickableContainerHeaderActiveHoverIconColor;
+$clickablePanelHeaderTransition:background-color $transitionDuration;
+
+//accordion
+$accordionHeaderMargin:2px;
+
+//tabview
+$tabsHeaderSpacing:.214em;
+$tabsNavBorder:0 none;
+$tabsNavBgColor:#ffffff;
+
+//scrollpanel
+$scrollPanelHandleBgColor:#bdbdbd;
+$scrollPanelTrackBorder:0 none;
+$scrollPanelTrackBgColor:#e0e0e0;
+
+//panelgrid
+$panelGridContentBgColor: #ffffff;
+
+//paginator
+$paginatorBgColor:#ffffff;
+$paginatorBorder:$panelContentBorder;
+$paginatorIconColor:$textSecondaryColor;
+$paginatorPadding:0;
+$paginatorElementWidth:2.286em;
+$paginatorElementHeight:2.286em;
+$paginatorElementHoverBgColor:$primaryLighterColor;
+$paginatorElementHoverIconColor:$primaryDarkestColor;
+$paginatorElementMargin:0;
+$paginatorElementBorder:0 none;
+$paginatorElementBorderRadius:0;
+
+//datatable
+$datatableHeaderCellPadding:.500em 1.214em;
+$datatableHeaderCellBgColor:#ffffff;
+$datatableHeaderCellTextColor:$textColor;
+$datatableHeaderCellFontWeight:700;
+$datatableHeaderCellBorder:$panelContentBorder;
+$datatableHeaderCellHoverBgColor:$primaryLighterColor;
+$datatableHeaderCellHoverTextColor:$primaryDarkestColor;
+$datatableBodyRowBgColor:#ffffff;
+$datatableBodyRowTextColor:$textColor;
+$datatableBodyRowBorder:$panelContentBorder;
+$datatableBodyRowEvenBgColor:#F5F5F5;
+$datatableBodyRowHoverBgColor:$primaryLighterColor;
+$datatableBodyRowHoverTextColor:$primaryDarkestColor;
+$datatableBodyCellPadding:.500em 1.214em;
+$datatableFooterCellPadding:.500em 1.214em;
+$datatableFooterCellBgColor:#ffffff;
+$datatableFooterCellTextColor:$textColor;
+$datatableFooterCellFontWeight:500;
+$datatableFooterCellBorder:$panelContentBorder;
+$datatableResizerHelperBgColor:$primaryColor;
+$datatableDataIconColor:$textSecondaryColor;
+
+//schedule
+$scheduleEventBgColor:$primaryColor;
+$scheduleEventBorder:1px solid $primaryDarkerColor;
+$scheduleEventTextColor:$primaryColorText;
+
+//tree
+$treeNodePadding:.143em 0;
+$treeNodeLabelPadding:.286em;
+
+//treetable
+$treeTableEditingCellPaddingLeft:1.214em;
+
+//messages
+$messagesMargin:1em 0;
+$messagesPadding:1em;
+$messagesIconFontSize:1.714em;
+$infoMessageBgColor:#64B5F6;
+$infoMessageBorder:1px solid #64B5F6;
+$infoMessageTextColor:#000000;
+$infoMessageIconColor:#000000;
+$warnMessageBgColor:#FFD54F;
+$warnMessageBorder:1px solid #FFD54F;
+$warnMessageTextColor:#000000;
+$warnMessageIconColor:#000000;
+$errorMessageBgColor:#EF5350;
+$errorMessageBorder:1px solid #EF5350;
+$errorMessageTextColor:#ffffff;
+$errorMessageIconColor:#ffffff;
+$fatalMessageBgColor:#757575;
+$fatalMessageBorder:1px solid #757575;
+$fatalMessageTextColor:#ffffff;
+$fatalMessageIconColor:#ffffff;
+$growlIconFontSize:3.429em;
+$growlMargin:0 0 1em 0;
+$growlPadding:1em;
+$growlShadow:0 3px .429em 0 rgba(0, 0, 0, 0.16);
+$messagePadding:$inputPadding;
+$messageMargin:0;
+
+//overlays
+$overlayContentBorder:$panelContentBorder;
+$overlayContainerShadow:0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+//overlay panel
+$overlayPanelCloseIconBgColor:$primaryDarkerColor;
+$overlayPanelCloseIconColor:$primaryColorText;
+$overlayPanelCloseIconHoverBgColor:$primaryDarkestColor;
+$overlayPanelCloseIconHoverColor:$primaryColorText;
+
+//tooltip
+$tooltipBgColor:#212121;
+$tooltipTextColor:#ffffff;
+
+//steps
+$stepsItemBgColor:#ffffff;
+$stepsItemBorder:1px solid #e0e0e0;
+$stepsItemBorderRadius:$borderRadius;
+$stepsItemNumberColor:$textColor;
+$stepsItemTextColor:$textSecondaryColor;
+$stepsItemWidth:2em;
+$stepsItemHeight:2em;
+
+//progressbar
+$progressBarHeight:1.714em;
+$progressBarBorder:0 none;
+$progressBarBgColor:#e0e0e0;
+$progressBarValueBgColor:$primaryColor;
+
+//menu
+$menuitemSubMenuPadding:0;
+$menuBgColor:$panelContentBgColor;
+$menuBorder:$panelContentBorder;
+$menuPadding:0;
+$menuTextColor:$textColor;
+$menuitemPadding:.571em .857em;
+$menuitemTextColor:$textColor;
+$menuitemIconColor:$textColor;
+$menuitemHoverTextColor:$primaryDarkestColor;
+$menuitemHoverIconColor:$primaryDarkestColor;
+$menuitemHoverBgColor:$primaryLighterColor;
+$toggleableMenuHeaderMargin:1px;
+$overlayMenuBorder:1px solid #e0e0e0;
+$overlayMenuShadow:0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+//upload
+$fileItemPadding:0.429em 0.857em;
+
+//misc
+$maskBgColor:rgba(139, 139, 144, 0.72);
+$inlineSpacing:.429em;
+$chipsItemMargin:0 .286em 0 0;
+$dataIconColor:$textSecondaryColor;
+$dataIconHoverColor:$textColor;
+
+//general
+$disabledOpacity:.5;        
+</pre>
+</div>
+
+                    <h1>Menu</h1>    
+                    <p>Menu is a regular JSF component that supports PrimeFaces MenuModel API, allowing both declarative and programmatic approaches.</p>
+<pre>
+xmlns:po="http://primefaces.org/prestige"
+
+&lt;po:menu&gt;
+&lt;/po:menu&gt;
+</pre>  
+                    <p>Menu has 2 modes; horizontal and overlay. Layout wrapper element in template.xhtml is used to define which mode to use by adding specific classes. Default
+                    is static and here is the list of classes for each mode.</p>
+                    <ul>
+                        <li>Horizontal: "layout-menu-horizontal"</li>
+                        <li>Overlay: "layout-menu-overlay"</li>
+                    </ul>
+
+                    <p>Example layout below always uses a slim mode.</p>
+<pre>
+&lt;div class="layout-wrapper layout-menu-horizontal"&gt;
+...
+&lt;/div&gt;
+</pre>
+                    
+                    <p>Layout mode can be dynamic using an EL expression as well using an example bean like guestPreferences so that your users can choose the layout they prefer when using your application.</p>
+<pre>
+&lt;div class="layout-wrapper \#{guestPreferences.menuMode}"&gt;
+...
+&lt;/div&gt;
+</pre>
+
+
+                    <i>TopBar Colors</i>
+                    <p>Prestige provides 17 built-in color alternatives for the topbar, default is the light mode where adding a style class to the "layout-wrapper" element such as "layout-topbar-dark" enables the dark option.</p>
+<pre>
+&lt;div class="layout-wrapper layout-topbar-dark"&gt;
+...
+&lt;/div&gt;
+</pre>
+                    <p>The full list of alternative are;</p>
+                    <ul>
+                        <li>layout-topbar-light</li>
+                        <li>layout-topbar-dark</li>
+                        <li>layout-topbar-blue</li>
+                        <li>layout-topbar-bluegrey</li>
+                        <li>layout-topbar-cyan</li>
+                        <li>layout-topbar-deeporange</li>
+                        <li>layout-topbar-deeppurple</li>
+                        <li>layout-topbar-green</li>
+                        <li>layout-topbar-indigo</li>
+                        <li>layout-topbar-lime</li>
+                        <li>layout-topbar-magenta</li>
+                        <li>layout-topbar-orange</li>
+                        <li>layout-topbar-pink</li>
+                        <li>layout-topbar-purple</li>
+                        <li>layout-topbar-rose</li>
+                        <li>layout-topbar-teal</li>
+                    </ul>
+
+                    <h1>Icons</h1>
+                    <p>Prestige Layout uses font awesome icons for layout so enable font awesome support in PrimeFaces by setting primefaces.FONT_AWESOME context parameter in web.xml as true.</p>
+<pre>
+&lt;context-param&gt;
+    &lt;param-name&gt;primefaces.FONT_AWESOME&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/context-param&gt;
+</pre>              
+
+                    <h1>Card</h1>
+                    <p>Card is a section to group content and layout provides a built-in css for it. Apply .card style class to your container to use it. If the
+                    card has a title defined with h1 tag, add card-w-title to adjust paddings.</p>
+<pre>
+&lt;div class="card"&gt;
+    Content here
+&lt;/div&gt;
+
+&lt;div class="card card-w-title"&gt;
+    &lt;h1&gt;Card with Title&lt;h1&gt;
+    Content here
+&lt;/div&gt;
+</pre>  
+
+                    <h1>Grid CSS</h1>
+                    <p>Prestige uses new <a href="https://github.com/primefaces/primeflex">PrimeFlex</a> CSS throughout the samples however you may also use other Grid Utilities as well including the standard CSS Grid.</p>
+                    
+                    <h1>Tips</h1>
+                    <ul>
+                        <li>Familiarity with <a href="http://sass-lang.com/">SASS</a> is required to make customizations to the layout and theme.</li>
+                        <li>Demo application war and the maven project tag are included in distribution however you don't necessarily need them to install prestige,
+                            the actual artifacts required are the layout zip file and the theme jar.</li>
+                    </ul>
+
+                    <h1>Migration Guide</h1>
+                    <p>For seamless updates use the <i>/sass/overrides/_layout_styles.scss</i>, <i>/sass/overrides/_layout_variables.scss</i> for overriding the layout styles and <i>/sass/overrides/_theme_styles.scss</i>, <i>/sass/overrides/_theme_variables.scss</i> for customizing the theme styles instead of changing the scss files under layout and theme files to 
+                        avoid maintenance issues. Updates usually require updating the layout and theme folders so your changes won't get effected during updates since they are kept in external files.
+                    </p>
+
+                    <p>1.1.0 to 2.0.0</p>
+                    <ul>
+                        <li>Update layout.js and layout css files</li>
+                        <li>Replace theme jar with new jar</li>
+                    </ul>
+                    <p>1.0.0 to 1.1.0</p>
+                    <ul>
+                        <li>Add new layout colors.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>

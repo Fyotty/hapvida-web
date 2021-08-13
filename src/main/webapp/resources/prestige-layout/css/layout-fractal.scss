@@ -1,0 +1,51 @@
+$primaryColor:#058B8C;
+$primaryHiglightColor:#024B4C;
+$primaryTextColor:#058B8C;
+
+/* background */
+$backgroundImage:'fractal.jpg';
+
+/* horizontal menu */
+$horizontalMenuItemBgColor: rgba(255,255,255,0.2);
+$horizontalMenuItemTextColor: rgba(255,255,255,0.8);
+$horizontalMenuItemHoverBgColor: rgba(255,255,255,0.4);
+$horizontalMenuItemHoverTextColor: #ffffff;
+
+/* topbar */
+$topbarItemBgColor:rgba(255,255,255,0.2);
+$topbarItemHoverBgColor:rgba(255,255,255,0.4);
+$topbarItemIconColor:rgba(255,255,255,0.8);
+$topbarItemTextColor:rgba(255,255,255,0.8);
+$topbarChildItemHoverColor:#48B4D9;
+$topbarSearchInputTextColor:#dddee1;
+$topbarSearchPlaceholderTextColor:#dddee1;
+
+/* user profile */
+$userProfileTextColor:#f0f0f0;
+
+/* overlay menu */
+$overlayMenuItemHoverBgColor:#F7BCC3;
+$overlayMenuItemActiveTextColor:#D8616E;
+
+/* overlay menu button */
+$overlayMenuButtonColor:#4C2626;
+$overlayMenuButtonHoverBgColor:#F7BCC3;
+
+/* mobile menu button */
+$mobileMenuIconColor:#ffffff;
+
+/* actionbar */
+$actionItemBgColor:#FEE3E6;
+$actionItemIconColor:#7A2D36;
+$actionItemHoverBgColor:#F7BCC3;
+$actionItemActiveBgColor:#D8616E;
+$actionItemActiveIconColor:#ffffff;
+
+//footer
+$footerTextColor:rgba(0, 0, 0, 0.67);
+$footerTextHoverColor:rgba(0, 0, 0, 0.9);
+
+/* spinner color */
+$spinnerColor:#D8616E;
+
+@import '../../sass/layout/_layout';

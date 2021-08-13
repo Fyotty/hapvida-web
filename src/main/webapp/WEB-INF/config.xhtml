@@ -1,0 +1,83 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+    <div id="layout-config" class="layout-config">
+        <div class="layout-config-content">
+            <a href="#" class="layout-config-close">
+                <i class="fa fa-times"></i>
+            </a>
+            <h:form id="config-form">
+                <p:tabView id="config-form-tabs">
+                    <p:tab title="Component Themes">
+                        <p:outputPanel id="componentthemes-panel">
+                            <div class="p-grid">
+                                <ui:repeat value="#{guestPreferences.componentThemes}" var="componentTheme">
+                                    <div class="p-col p-xl-2">
+                                        <p:commandLink styleClass="layout-config-option" actionListener="#{guestPreferences.setTheme(componentTheme.file)}" update=":config-form:config-form-tabs:componentthemes-panel"
+                                            onstart="PrimeFaces.PrestigeConfigurator.beforeResourceChange()"    
+                                            oncomplete="PrimeFaces.PrestigeConfigurator.changeComponentsTheme('#{componentTheme.file}')">
+                                            <p:graphicImage name="images/configurator/theme/#{componentTheme.image}" library="prestige-layout" title="#{componentTheme.name}" />
+                                            <ui:fragment rendered="#{componentTheme.file eq guestPreferences.theme}">
+                                                <i class="fa fa-check"></i>
+                                            </ui:fragment>
+                                        </p:commandLink>
+                                    </div>
+                                </ui:repeat>
+                            </div>
+                        </p:outputPanel>
+                    </p:tab>
+
+                    <p:tab title="Layout Themes">
+                        <p:outputPanel id="layoutthemes-panel">
+                            <div class="p-grid">
+                                <ui:repeat value="#{guestPreferences.layoutThemes}" var="layoutTheme">
+                                    <div class="p-col p-xl-2">
+                                        <p:commandLink styleClass="layout-config-option" actionListener="#{guestPreferences.changeLayoutTheme(layoutTheme)}" update=":config-form:config-form-tabs:layoutthemes-panel"
+                                            onstart="PrimeFaces.PrestigeConfigurator.beforeResourceChange()"
+                                            oncomplete="PrimeFaces.PrestigeConfigurator.changeLayout('#{layoutTheme.file}', '#{layoutTheme.componentTheme}')">
+                                            <p:graphicImage name="images/configurator/layout/#{layoutTheme.image}" library="prestige-layout" title="#{layoutTheme.name}" />
+                                            <ui:fragment rendered="#{layoutTheme.file eq guestPreferences.layout}">
+                                                <i class="fa fa-check"></i>
+                                            </ui:fragment>
+                                        </p:commandLink>
+                                    </div>
+                                </ui:repeat>
+                            </div>
+                        </p:outputPanel>
+                    </p:tab>
+
+                    <p:tab title="Menu Modes">
+                        <p:outputPanel id="menumodes-panel">
+                            <div class="p-grid">
+                                <div class="p-col p-col-fixed">
+                                    <p:commandLink styleClass="layout-config-option layout-config-option-light" actionListener="#{guestPreferences.setMenuMode('layout-menu-horizontal')}" update=":config-form:config-form-tabs:menumodes-panel"
+                                            oncomplete="PrimeFaces.PrestigeConfigurator.changeMenuToHorizontal()">
+                                        <p:graphicImage name="images/configurator/menu/horizontal.png" library="prestige-layout" title="Horizontal" style="width:100%"/>
+                                        <ui:fragment rendered="#{guestPreferences.menuMode eq 'layout-menu-horizontal'}">
+                                            <i class="fa fa-check"></i>
+                                        </ui:fragment>
+                                    </p:commandLink>
+                                </div>
+                                <div class="p-col p-col-fixed">
+                                    <p:commandLink styleClass="layout-config-option layout-config-option-light" actionListener="#{guestPreferences.setMenuMode('layout-menu-overlay')}" update=":config-form:config-form-tabs:menumodes-panel"
+                                            oncomplete="PrimeFaces.PrestigeConfigurator.changeMenuToOverlay()"> 
+                                    <p:graphicImage name="images/configurator/menu/overlay.png" library="prestige-layout" title="Overlay"  style="width:100%"/>
+                                    <ui:fragment rendered="#{guestPreferences.menuMode == 'layout-menu-overlay'}">
+                                            <i class="fa fa-check"></i>
+                                        </ui:fragment>
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                        </p:outputPanel>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </div>
+        
+    </div>
+</ui:composition>

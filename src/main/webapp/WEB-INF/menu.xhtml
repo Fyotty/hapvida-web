@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" xmlns:po="http://primefaces.org/prestige">
+
+    <div class="layout-menu-container">
+        <div class="overlay-menu-button">
+            <div class="overlay-menu-button-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="overlay-menu-button-times">
+              <span></span>
+              <span></span>
+            </div>
+        </div>
+
+        <h:form id="menuform">  
+            <div class="layout-menu-wrapper">      
+                <po:menu widgetVar="prestigeMenuWidget">
+                    
+                    <p:submenu id="om_components" label="Home" icon="fa fa-fw fa-bars">
+                        <p:menuitem id="om_sample" value="Sample Page" icon="fa fa-fw fa-columns" outcome="/sample" />
+                        <p:menuitem id="om_forms" value="Forms" icon="fa fa-fw fa-code" outcome="/forms" />
+                        <p:menuitem id="om_data" value="Data" icon="fa fa-fw fa-table" outcome="/data" />
+                        <p:menuitem id="om_panels" value="Panels" icon="fa fa-fw fa-list-alt" outcome="/panel" />
+                        <p:menuitem id="om_overlays" value="Overlays" icon="fa fa-fw fa-square" outcome="/overlay" />
+                        <p:menuitem id="om_menus" value="Menus" icon="fa fa-fw fa-minus-square-o" outcome="/menu" />
+                        <p:menuitem id="om_messages" value="Messages" icon="fa fa-fw fa-circle-o-notch"
+                            outcome="/messages" />
+                        <p:menuitem id="om_charts" value="Charts" icon="fa fa-fw fa-area-chart" outcome="/charts" />
+                        <p:menuitem id="om_file" value="File" icon="fa fa-fw fa-arrow-circle-o-up" outcome="/file" />
+                        <p:menuitem id="om_misc" value="Misc" icon="fa fa-fw fa-user-secret" outcome="/misc" />
+                    </p:submenu>
+                    
+                </po:menu>
+            </div>                  
+        </h:form>
+    </div>
+</ui:composition>

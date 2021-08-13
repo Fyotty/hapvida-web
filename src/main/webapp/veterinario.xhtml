@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Bem vindo(a) ao HAPVIDA</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-panelgrid.form-elements .ui-grc-2 {
+                padding-left: 60px;
+            }
+
+            @media (max-width:1024px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 20px;
+                }
+            }
+
+            @media (max-width:640px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 6px;
+                }
+            }
+
+            .dialogDemo label {
+                line-height: 2.1em;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">              
+                    <h:form>       
+                        <p:commandButton value="Cadastro" oncomplete="PF('dlg').show();" title="Cadastrar um novo Veterinário"
+                                         actionListener="#{veterinarioController.cadastrar()}" update=":formCad"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <h:form id="formCad">
+            <p:dialog visible="#{facesContext.validationFailed}" header="Cadastro de Veterinário" widgetVar="dlg" 
+                      resizable="false" modal="true" closable="false" >
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="nome" value="Nome" />
+                        <p:inputText id="nome" value="#{veterinarioController.veterinario.nome}" placeholder="Ex: Pablo" required="true" requiredMessage="Informe o nome"/>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{veterinarioController.veterinario.email}" placeholder="Ex: nome@gmail.com" required="true" requiredMessage="Informe o e-mail"/>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="telefone" value="Telefone" />
+                        <p:inputText id="telefone" value="#{veterinarioController.veterinario.telefone}" placeholder="Ex: (00) 00000-0000" required="true" requiredMessage="Informe o telefone"/>
+                    </div>
+
+                </div>
+
+                <f:facet name="footer">
+                    <div class="TexAlCenter Container100 Responsive100">
+                        <p:commandButton value="Salvar" update="formCad tabela" style="width:90px"
+                                         widgetVar="btnVeterinario"
+                                         onclick="PF('btnVeterinario').disable()"
+                                         actionListener="#{veterinarioController.salvar()}" 
+                                         title="Cadastrar informações"/>
+                        <p:commandButton value="Fechar" onclick="PF('dlg').hide();$('#formCad').trigger('reset');" type="button" style="width:80px" styleClass="red-btn"/>
+                    </div>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Veterinários</h1>
+                    <div class="sales-panel">
+                        <h:form id="tabela">
+                            <p:dataTable var="veterinario" value="#{veterinarioController.veterinarios}" rows="10" paginator="true" rowsPerPageTemplate="10,20,40" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         emptyMessage="Nenhum cadastro na tabela" selectionMode="single" rowKey="#{veterinario.id}" reflow="true" style="margin-bottom:20px">
+                                <p:column headerText="Nome " filterBy="#{veterinario.nome}" filterMatchMode="contains">
+                                    <h:outputText value="#{veterinario.nome}" />
+                                </p:column>
+                                <p:column headerText="Telefone ">
+                                    <h:outputText value="#{veterinario.telefone}" />
+                                </p:column>
+                                <p:column headerText="E-mail ">
+                                    <h:outputText value="#{veterinario.email}" />
+                                </p:column>
+
+                                <p:column headerText="Ações" style="width: 240px; text-align: center;">
+                                    <p:growl id="message" showDetail="true" />
+                                    <p:commandButton icon="fa fa-pencil" actionListener="#{veterinarioController.modificar}" title="Editar" style="background-color: #1989AC;"
+                                                     update=":formCad" oncomplete="PF('dlg').show();">
+                                        <f:attribute name="veterinarioSelect" value="#{veterinario}"/>
+                                    </p:commandButton>                
+
+                                    <p:commandButton styleClass="red-btn" icon="fa fa-trash" action="#{veterinarioController.deletar(veterinario)}" update="message tabela" title="Excluir">
+                                        <p:confirm header="Confirmação" message="Deseja realmente excluir este registro?" />
+                                        <f:setPropertyActionListener target="#{veterinarioController.veterinario}" value="#{veterinario}"/>
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+                                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no red-btn" />
+                                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                                    </p:confirmDialog>  
+
+                                </p:column>
+                            </p:dataTable>
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

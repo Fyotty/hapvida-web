@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Bem vindo(a) ao HAPVIDA</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-panelgrid.form-elements .ui-grc-2 {
+                padding-left: 60px;
+            }
+
+            @media (max-width:1024px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 20px;
+                }
+            }
+
+            @media (max-width:640px) {
+                .ui-panelgrid.form-elements .ui-grc-2 {
+                    padding-left: 6px;
+                }
+            }
+
+            .dialogDemo label {
+                line-height: 2.1em;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">              
+                    <h:form>       
+                        <p:commandButton value="Cadastro" oncomplete="PF('dlg').show();" title="Cadastrar um novo Animal"
+                                         actionListener="#{animalController.cadastrar()}" update=":formCad"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <h:form id="formCad">
+            <p:dialog visible="#{facesContext.validationFailed}" header="Cadastro de Animal" widgetVar="dlg" 
+                      resizable="false" modal="true" closable="false" >
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="nome" value="Nome" />
+                        <p:inputText id="nome" value="#{animalController.animal.nome}" placeholder="Ex: Bob" required="true" requiredMessage="Informe o nome"/>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="raca" value="Raça" />
+                        <p:inputText id="raca" value="#{animalController.animal.raca}" placeholder="Pitbull" required="true" requiredMessage="Informe a raça"/>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="especie" value="Espécie" />
+                        <p:selectOneMenu value="#{animalController.animal.especie}" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecione..." itemValue="" />
+                            <f:selectItems value="#{animalController.tipoAnimal}" var="tipoAnimal"
+                                           itemLabel="#{tipoAnimal.descricao}" itemValue="#{tipoAnimal}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="tutor" value="Tutores" />
+                        <p:selectOneMenu id="tutor" value="#{animalController.animal.idTutor}" filter="true" filterMatchMode="contains"
+                                         converter="generic" required="true" requiredMessage="Informe o tutor">
+                            <f:selectItem itemLabel="Selecione..." itemValue=""/>
+                            <f:selectItems value="#{tutorController.tutores}" var="tutor"
+                                           itemValue="#{tutor}" itemLabel="#{tutor.nome}"/> 
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:outputLabel for="data" value="Data de nascimento" />
+                        <p:calendar value="#{animalController.animal.dataNascimento}" pattern="dd/MM/yyyy" mask="true" placeholder="00/00/0000"/>
+                    </div>
+
+                </div>
+
+                <f:facet name="footer">
+                    <div class="TexAlCenter Container100 Responsive100">
+                        <p:commandButton value="Salvar" update="formCad tabela" style="width:90px"
+                                         widgetVar="btnAnimal"
+                                         onclick="PF('btnAnimal').disable()"
+                                         actionListener="#{animalController.salvar()}" 
+                                         title="Cadastrar informações"/>
+                        <p:commandButton value="Fechar" onclick="PF('dlg').hide();$('#formCad').trigger('reset');" type="button" style="width:80px" styleClass="red-btn"/>
+                    </div>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Animais</h1>
+                    <div class="sales-panel">
+                        <h:form id="tabela">
+                            <p:dataTable var="animal" value="#{animalController.animais}" rows="10" paginator="true" rowsPerPageTemplate="10,20,40" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         emptyMessage="Nenhum cadastro na tabela" selectionMode="single" rowKey="#{animal.id}" reflow="true" style="margin-bottom:20px">
+                                <p:column headerText="Nome " filterBy="#{animal.nome}" filterMatchMode="contains">
+                                    <h:outputText value="#{animal.nome}" />
+                                </p:column>
+                                <p:column headerText="Raça ">
+                                    <h:outputText value="#{animal.raca}" />
+                                </p:column>
+                                <p:column headerText="Espécie ">
+                                    <h:outputText value="#{animal.especie.descricao}" />
+                                </p:column>
+                                <p:column headerText="Data de nascimento " filterBy="#{animal.dataNascimento}" filterMatchMode="contains">
+                                    <h:outputText value="#{animal.dataNascimento}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Ações" style="width: 240px; text-align: center;">
+                                    <p:growl id="message" showDetail="true" />
+                                    <p:commandButton icon="fa fa-pencil" actionListener="#{animalController.modificar}" title="Editar" style="background-color: #1989AC;"
+                                                     update=":formCad" oncomplete="PF('dlg').show();">
+                                        <f:attribute name="animalSelect" value="#{animal}"/>
+                                    </p:commandButton>                
+
+                                    <p:commandButton styleClass="red-btn" icon="fa fa-trash" action="#{animalController.deletar(animal)}" update="message tabela" title="Excluir">
+                                        <p:confirm header="Confirmação" message="Deseja realmente excluir este registro?" />
+                                        <f:setPropertyActionListener target="#{animalController.animal}" value="#{animal}"/>
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+                                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no red-btn" />
+                                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                                    </p:confirmDialog>  
+
+                                </p:column>
+                            </p:dataTable>
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

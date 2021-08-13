@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <div class="layout-actionbar">
+        <div class="breadcrumb">
+            <div class="route-bar-breadcrumb">
+                <ui:insert name="viewname" />
+            </div>
+        </div>
+        <div class="actions ">
+            <ul>
+                <li>
+                    <h:form>      
+                        <p:button style="background-color: #26bc8a; border-color: #26bc8a;" outcome="tutor.xhtml" icon="fa fa-user" title="Ir para tutores" />
+                    </h:form>
+                </li>
+                <li>
+                    <h:form>      
+                        <p:button style="background-color: #91B10B; border-color: #26bc8a;" outcome="veterinario.xhtml" icon="fa fa-user-plus" title="Ir para veterinários" />
+                    </h:form>
+                </li>
+                <li>
+                    <h:form>      
+                        <p:button style="background-color: #A054E5; border-color: #26bc8a;" outcome="animal.xhtml" icon="fa fa-github-alt" title="Ir para animais" />
+                    </h:form>
+                </li>
+                <li>
+                    <h:form>      
+                        <p:button style="background-color: #7A2D36; border-color: #26bc8a;" outcome="consulta.xhtml" icon="fa fa-neuter" title="Ir para Consultas" />
+                    </h:form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</ui:composition>
